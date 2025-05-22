@@ -50,3 +50,4 @@ jobs:
             ${{ steps.report_contents.outputs.report_contents }}
             <!-- beagle-report -->
           edit-mode: replace
+          reactions: eyes
