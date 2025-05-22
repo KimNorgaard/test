@@ -7,6 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Find beagle report comment
         uses: peter-evans/find-comment@v3
