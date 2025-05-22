@@ -27,19 +27,26 @@ jobs:
           body-includes: "<!-- beagle-report -->"
           direction: last
 
+      - name: Read report contents
+        id: report_contents
+        run: |
+          FILE_PATH="comment-body.md"
+          if [ -f "$REPORT_PATH" ]; then
+            FILE_CONTENT=$(cat "$FILE_PATH")
+            echo "file_content<<EOF" >> $GITHUB_OUTPUT
+            echo "$FILE_CONTENT" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "Report file not found: $FILE_PATH"
+            echo "report_contents=No report found." >> $GITHUB_OUTPUT
+          fi
+
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body-path: "comment-body.md"
-          edit-mode: replace
-
-      - name: Add report identifier to comment
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          edit-mode: append
           body: |
+            "${{ steps.report_contents.outputs.file_content }}"
             <!-- beagle-report -->
+          edit-mode: replace
