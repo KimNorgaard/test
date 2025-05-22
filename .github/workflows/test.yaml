@@ -37,7 +37,7 @@ jobs:
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: ${{ github.event.pull_request.user.login }}
+          comment-author: "github-actions[bot]"
           body-includes: "<!-- beagle-report -->"
           direction: last
 
